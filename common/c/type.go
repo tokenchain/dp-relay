@@ -1,12 +1,13 @@
-package config
+package c
 
 // BaseConfig defines the base configuration for a Tendermint node
 type BaseConfig struct {
-	ChainID  string
-	RootDir  string `mapstructure:"home"`
-	ProxyApp string `mapstructure:"proxy_app"`
-	DBPath   string `mapstructure:"db_dir"`
-	LogLevel string `mapstructure:"log_level"`
+	ChainID    string
+	RootDir    string `mapstructure:"home"`
+	ProxyApp   string `mapstructure:"proxy_app"`
+	DBPath     string `mapstructure:"db_dir"`
+	LogLevel   string `mapstructure:"log_level"`
+	ListenAddr string `mapstructure:"listen_address"`
 }
 
 // Config defines the top level configuration for a Tendermint node

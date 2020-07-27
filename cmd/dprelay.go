@@ -1,29 +1,35 @@
 package main
 
-import(
+import (
 	"flag"
+	"fmt"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"main.go/common/c"
+	"main.go/extend"
 )
 
 const (
-	flagInvCheckPeriod = "inv-check-period"
-	flagConfigType         = "config-type"
+	flagInvCheckPeriod     = "inv-check-period"
+	flagRootDir            = "root-dir"
 	flagConfigAwsRegion    = "aws-region"
 	flagConfigAwsSecretKey = "aws-secret-key"
-	flagConfigPath         = "config-path"
-	flagBBCNetwork         = "bbc-network"
+	flagListenerAddress    = "config-path"
 )
 
 var (
 	invCheckPeriod uint
 )
+
+func printUsage() {
+	fmt.Print("usage: ./relayer --bbc-network [0 for testnet, 1 for mainnet] --config-path config_file_path\n")
+}
+
 func initFlags() {
-	flag.String(flagConfigPath, "", "config path")
-	flag.String(flagConfigType, "", "config type, local or aws")
+	flag.String(flagListenerAddress, "0.0.0.0:8080", "listening on port")
+	flag.String(flagRootDir, "./conf", "the local config dir")
 	flag.String(flagConfigAwsRegion, "", "aws s3 region")
 	flag.String(flagConfigAwsSecretKey, "", "aws s3 secret key")
-	flag.Int(flagBBCNetwork, int(types.TestNetwork), "bbc chain network type")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
@@ -31,6 +37,12 @@ func initFlags() {
 }
 
 func main() {
+	initFlags()
+	config := c.DefaultConfig()
+	config.RootDir = viper.GetString(flagRootDir)
+	config.ListenAddr = viper.GetString(flagListenerAddress)
+	adm := extend.NewConf(config)
+	go adm.Serve()
 
+	select {}
 }
-
