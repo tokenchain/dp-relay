@@ -1,5 +1,5 @@
 package AddressModel
-
+/*
 import (
 	"github.com/gohouse/gorose/v2"
 	"main.go/tuuz"
@@ -42,3 +42,4 @@ func Api_find(address string) gorose.Data {
 		return ret
 	}
 }
+*/

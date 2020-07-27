@@ -1,5 +1,5 @@
 package controller
-
+/*
 import (
 	"github.com/gin-gonic/gin"
 	"main.go/app/v1/index/model/AddressModel"
@@ -97,3 +97,4 @@ func register(c *gin.Context) {
 	}
 
 }
+*/

@@ -1,5 +1,5 @@
 package UserModel
-
+/*
 import (
 	"github.com/gohouse/gorose/v2"
 	"main.go/tuuz"
@@ -70,3 +70,4 @@ func Api_find_byPaypass(username, paypass string) gorose.Data {
 		return ret
 	}
 }
+*/

@@ -70,59 +70,31 @@ OS=linux
 
 build: go.sum
 ifeq ($(OS),Windows_NT)
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpd.exe ./cmd/dpd
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpcli.exe ./cmd/dpcli
+	go build -mod=readonly $(BUILD_FLAGS) -o build/dpreplay.exe ./cmd/dpreplay
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpd ./cmd/dpd
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpcli ./cmd/dpcli
+	go build -mod=readonly $(BUILD_FLAGS) -o build/dpreplay ./cmd/dpreplay
 endif
-
 centos: go.sum
-	gox -osarch="linux/amd64" -mod=readonly $(BUILD_FLAGS) -output build/linux/dpd ./cmd/dpd
-	gox -osarch="linux/amd64" -mod=readonly $(BUILD_FLAGS) -output build/linux/dpcli ./cmd/dpcli
-
+	gox -osarch="linux/amd64" -mod=readonly $(BUILD_FLAGS) -output build/linux/dpreplay ./cmd/dpreplay
 install: go.sum
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dpd
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dpcli
-
+	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dpreplay
 sign-release:
 	if test -n "$(GPG_SIGNING_KEY)"; then \
 	  gpg --default-key $(GPG_SIGNING_KEY) -a \
 	      -o SHA256SUMS.sign -b SHA256SUMS; \
 	fi;
-
 lint: go.sum
-	go run ./cmd/dpd
-	go run ./cmd/dpcli
-
-build-faucet: go.sum
-ifeq ($(OS),Windows_NT)
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpfaucet.exe ./cmd/dpfaucet
-
-	else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpfaucet ./cmd/dpfaucet
-endif
-
-install-faucet: go.sum
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dpfaucet
-
-linux-faucet: go.sum
-	env GOOS=linux GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/dpfaucet ./cmd/dpfaucet
-
+	go run ./cmd/dpreplay
 update-git: go.sum
 	$(update_check)
-
 preinstall: go.sum
 	sudo go get github.com/mitchellh/gox
 ########################################
 ### Tools & dependencies
-
 go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
 	@go mod download
-
 go.sum: go.mod
 	@echo "--> Ensure dependencies have not been modified"
 	@go mod verify
-
 .PHONY: all build install go.sum
