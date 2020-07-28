@@ -12,13 +12,13 @@ endef
 # process linker flags
 
 
-BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
+#BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 SHOWTIMECMD :=  date "+%Y/%m/%d H:%M:%S"
 
 all: lint install
 OS=linux
 
-build: update-git go.sum
+build: go.sum update-git
 ifeq ($(OS),Windows_NT)
 	go build -mod=readonly -o build/dprelay.exe ./cmd/dprelay
 else

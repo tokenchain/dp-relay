@@ -66,7 +66,7 @@ VERSION=$(cat version)
 increment_version $VERSION > version
 echo $VERSION
 git add .
-git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
+#git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
 git commit -m "compile success modification v$VERSION"
 #git remote add origin https://gitee.com/jjhoc/b-explorer-settings.git
 git push
@@ -74,20 +74,13 @@ git push
 exit
 
 
-DDIR=$HOME/Documents/Darkpool/main.go
-OUT=$HOME/Documents/Darkpool/menoex
-EXE=/usr/local/Cellar/go/1.13.7/libexec/bin/go
-GOROOT=/usr/local/Cellar/go/1.13.7/libexec #gosetup
-GOPATH=/Users/hesk/go #gosetup
-UNZIP_FILE=linux_menoex_core.zip
-
 #$EXE build -i -o $OUT $DDIR
 #./testing_darwin
 echo "now start linux build local"
 #go run -race $DDIR
 #go tool vet $DDIR
-env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $OUT -tags=gpu $DDIR
-zip -r -q -o $UNZIP_FILE menoex
-rm -r menoex
+#env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $OUT -tags=gpu $DDIR
+#zip -r -q -o $UNZIP_FILE menoex
+#rm -r menoex
 #==========================
 echo "Final Pack Finish"
