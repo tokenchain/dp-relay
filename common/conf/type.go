@@ -1,4 +1,4 @@
-package c
+package conf
 
 // BaseConfig defines the base configuration for a Tendermint node
 type BaseConfig struct {

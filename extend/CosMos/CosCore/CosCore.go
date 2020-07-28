@@ -2,10 +2,10 @@ package CosCore
 /*
 import (
 	"fmt"
-	"main.go/config/app_conf"
-	Calc2 "main.go/tuuz/Calc"
-	"main.go/tuuz/Net"
-	Calc "main.go/tuuz/Str"
+	"dprelay/config/app_conf"
+	Calc2 "dprelay/tuuz/Calc"
+	"dprelay/tuuz/Net"
+	Calc "dprelay/tuuz/Str"
 	"os/exec"
 	"time"
 )

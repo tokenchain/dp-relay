@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gohouse/gorose"
-	"main.go/app/v1/cosmos/model/BlocksModel"
-	"main.go/tuuz"
-	"main.go/tuuz/Calc"
-	"main.go/tuuz/Jsong"
-	"main.go/tuuz/RET"
+	"dprelay/app/v1/cosmos/model/BlocksModel"
+	"dprelay/tuuz"
+	"dprelay/tuuz/Calc"
+	"dprelay/tuuz/Jsong"
+	"dprelay/tuuz/RET"
 
 	"os/exec"
 )

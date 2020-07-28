@@ -2,10 +2,10 @@ package controller
 /*
 import (
 	"github.com/gin-gonic/gin"
-	"main.go/app/v1/cosmos/model/BlocksModel"
-	"main.go/tuuz"
-	"main.go/tuuz/Calc"
-	"main.go/tuuz/RET"
+	"dprelay/app/v1/cosmos/model/BlocksModel"
+	"dprelay/tuuz"
+	"dprelay/tuuz/Calc"
+	"dprelay/tuuz/RET"
 )
 
 func AddressController(route *gin.RouterGroup) {

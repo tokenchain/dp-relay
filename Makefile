@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-VERSION := v$(shell cat version.txt)              # $(shell echo $(shell git describe --tags) | sed 's/^v//')
+VERSION := v$(shell cat version)              # $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 LEDGER_ENABLED ?= true
@@ -70,21 +70,21 @@ OS=linux
 
 build: go.sum
 ifeq ($(OS),Windows_NT)
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpreplay.exe ./cmd/dpreplay
+	go build -mod=readonly $(BUILD_FLAGS) -o build/dprelay.exe ./cmd/dprelay
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/dpreplay ./cmd/dpreplay
+	go build -mod=readonly $(BUILD_FLAGS) -o build/dprelay ./cmd/dprelay
 endif
 centos: go.sum
-	gox -osarch="linux/amd64" -mod=readonly $(BUILD_FLAGS) -output build/linux/dpreplay ./cmd/dpreplay
+	gox -osarch="linux/amd64" -mod=readonly $(BUILD_FLAGS) -output build/linux/dprelay ./cmd/dprelay
 install: go.sum
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dpreplay
+	go install -mod=readonly $(BUILD_FLAGS) ./cmd/dprelay
 sign-release:
 	if test -n "$(GPG_SIGNING_KEY)"; then \
 	  gpg --default-key $(GPG_SIGNING_KEY) -a \
 	      -o SHA256SUMS.sign -b SHA256SUMS; \
 	fi;
 lint: go.sum
-	go run ./cmd/dpreplay
+	go run ./cmd/dprelay
 update-git: go.sum
 	$(update_check)
 preinstall: go.sum

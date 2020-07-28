@@ -1,66 +1,59 @@
 package extend
 
 import (
-	"encoding/json"
+	"dprelay/common/conf"
+	"dprelay/common/rest"
+	"dprelay/extend/internal/hdwallet"
 	"fmt"
 	"github.com/gorilla/mux"
-	"main.go/common/c"
 	"net/http"
 	"time"
-)
-
-type (
-	Centere struct {
-		Config *c.Config
-	}
-	ERout func(w http.ResponseWriter, r *http.Request)
 )
 
 const (
 	DefaultListenAddr = "0.0.0.0:8080"
 )
 
-var (
-	routes = map[string]ERout{
-		"/": Endpoints,
-		"/hdwallet/create/{at_index}/": SkipSequence,
-		"/hdwallet/createbatch/{from_index}/{to_index}": SkipSequence,
-		"/hdwallet/recover/": SkipSequence,
-	}
-)
+type Centere struct {
+	Config     *conf.Config
+	routesGet  map[string]hdwallet.EndpointHandler
+	routesPost map[string]hdwallet.EndpointHandler
+}
 
-func getFunctionList() []string {
+func (center *Centere) Endpoints(w http.ResponseWriter, r *http.Request) {
 	var list []string
-	for k, _ := range routes {
+	for k, _ := range center.routesGet {
 		list = append(list, k)
 	}
-	return list
+	for k, _ := range center.routesPost {
+		list = append(list, k)
+	}
+	rest.Endpoints(w, list)
 }
-
-func NewConf(config *c.Config) *Centere {
-	return &Centere{
+func NewConf(config *conf.Config) *Centere {
+	center := &Centere{
 		Config: config,
+		routesGet: map[string]hdwallet.EndpointHandler{
+			"/hdwallet/create/mnemonic": hdwallet.GenerateMnemonic,
+			//fmt.Sprintf("/hdwallet/create/{%s}/{%s}/", hdwallet.Name, hdwallet.Index):            hdwallet.RecoveryHandler,
+			//fmt.Sprintf("/hdwallet/createbatch/{%s}/{%s}", hdwallet.FromIndex, hdwallet.ToIndex): hdwallet.GenerateMnemonic,
+			//"/hdwallet/recover/": hdwallet.GenerateMnemonic,
+		},
+		routesPost: map[string]hdwallet.EndpointHandler{
+			fmt.Sprintf("/hdwallet/create/{%s}/", hdwallet.Index): hdwallet.RecoverySimpleHandler,
+			"/hdwallet/recovery": hdwallet.RecoveryHandler,
+		},
 	}
+	center.routesGet["/"] = center.Endpoints
+	return center
 }
 
-func Endpoints(w http.ResponseWriter, r *http.Request) {
-	endpoints := struct {
-		Endpoints []string `json:"endpoints"`
-	}{
-		Endpoints: getFunctionList(),
-	}
-	jsonBytes, err := json.MarshalIndent(endpoints, "", "    ")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(jsonBytes)
-}
 func (center *Centere) registerRoutes(r *mux.Router) {
-	for k, v := range routes {
-		r.HandleFunc(k, v)
+	for k, v := range center.routesGet {
+		r.HandleFunc(k, v).Methods("GET")
+	}
+	for k, v := range center.routesPost {
+		r.HandleFunc(k, v).Methods("POST")
 	}
 }
 func (center *Centere) Serve() {

@@ -2,12 +2,12 @@ package controller
 /*
 import (
 	"github.com/gin-gonic/gin"
-	"main.go/app/v1/index/model/AddressModel"
-	"main.go/app/v1/index/model/UserModel"
-	"main.go/extend/CosMos/CosCore"
-	"main.go/tuuz"
-	"main.go/tuuz/Jsong"
-	"main.go/tuuz/RET"
+	"dprelay/app/v1/index/model/AddressModel"
+	"dprelay/app/v1/index/model/UserModel"
+	"dprelay/extend/CosMos/CosCore"
+	"dprelay/tuuz"
+	"dprelay/tuuz/Jsong"
+	"dprelay/tuuz/RET"
 )
 
 func IndexController(route *gin.RouterGroup) {

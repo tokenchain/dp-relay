@@ -2,8 +2,8 @@ package UserModel
 /*
 import (
 	"github.com/gohouse/gorose/v2"
-	"main.go/tuuz"
-	"main.go/tuuz/Log"
+	"dprelay/tuuz"
+	"dprelay/tuuz/Log"
 )
 
 const table = "cos_user"
