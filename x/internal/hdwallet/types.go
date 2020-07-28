@@ -16,7 +16,6 @@ const (
 )
 
 type (
-
 	EndpointHandler func(w http.ResponseWriter, r *http.Request)
 
 	ReqMnemonic struct {

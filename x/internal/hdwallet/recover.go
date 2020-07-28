@@ -3,6 +3,7 @@ package hdwallet
 import (
 	"dprelay/common/rest"
 	"encoding/json"
+	"fmt"
 	"github.com/bitly/go-simplejson"
 	"github.com/gorilla/mux"
 	"github.com/tokenchain/ixo-blockchain/x/did/exported"
@@ -20,6 +21,7 @@ func RecoverySimpleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	index := mux.Vars(r)[Index]
 	g, _ := strconv.Atoi(index)
+
 	doc := recover("user_darkpool", p.Words, uint32(g))
 	jsonRes := simplejson.New()
 	jsonRes.Set("document", doc)
@@ -34,12 +36,13 @@ func RecoveryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	list := make([]exported.IxoDid, len(p.Names))
-	fromIndex := p.From
+	list := make([]exported.IxoDid, 0)
 	var i uint32
-	for i = 1; i < uint32(len(p.Names)); i++ {
-		doc := recover(p.Names[i], p.Words, i+fromIndex)
-		list = append(list, doc)
+	for i = 0; i < uint32(len(p.Names)); i++ {
+		account_index := i + p.From
+		doc := recover(p.Names[i], p.Words, account_index)
+		fmt.Println("get index number: ", doc)
+		list = append(list[:], doc)
 	}
 
 	jsonRes := simplejson.New()

@@ -31,6 +31,7 @@ func (center *Centere) Endpoints(w http.ResponseWriter, r *http.Request) {
 	rest.Endpoints(w, list)
 }
 func NewConf(config *conf.Config) *Centere {
+	setPrefix()
 	center := &Centere{
 		Config: config,
 		routesGet: map[string]hdwallet.EndpointHandler{
