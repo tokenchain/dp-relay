@@ -20,22 +20,22 @@ OS=linux
 
 build: go.sum update-git
 ifeq ($(OS),Windows_NT)
-	go build -mod=readonly -o build/dprelay.exe ./cmd/dprelay
+	go build -mod=readonly -o build/dprelay.exe ./cmd/main.go
 else
-	go build -mod=readonly -o build/dprelay ./cmd/dprelay
-	go build -o build/dprelay ./cmd/dprelay
+	go build -mod=readonly -o build/dprelay ./cmd/main.go
+	go build -o build/dprelay ./cmd/main.go
 endif
 centos: update-git go.sum
-	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/dprelay
+	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/main.go
 install: go.sum
-	go install -mod=readonly ./cmd/dprelay
+	go install -mod=readonly ./cmd/main.go
 sign-release:
 	if test -n "$(GPG_SIGNING_KEY)"; then \
 	  gpg --default-key $(GPG_SIGNING_KEY) -a \
 	      -o SHA256SUMS.sign -b SHA256SUMS; \
 	fi;
 lint:
-	go run ./cmd/dprelay
+	go run ./cmd/main.go
 update-git: go.sum
 	$(update_check)
 preinstall: go.sum
