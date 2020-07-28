@@ -4,7 +4,6 @@ COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 GPG_SIGNING_KEY = ''
 export GO111MODULE = on
-export COSMOS_SDK_TEST_KEYRING = n
 define update_check
  sh update.sh
 endef
@@ -19,13 +18,13 @@ SHOWTIMECMD :=  date "+%Y/%m/%d H:%M:%S"
 all: lint install
 OS=linux
 
-build: go.sum
+build: update-git go.sum
 ifeq ($(OS),Windows_NT)
 	go build -mod=readonly -o build/dprelay.exe ./cmd/dprelay
 else
 	go build -mod=readonly -o build/dprelay ./cmd/dprelay
 endif
-centos: go.sum
+centos: update-git go.sum
 	gox -osarch="linux/amd64" -mod=readonly -output build/linux/dprelay ./cmd/dprelay
 install: go.sum
 	go install -mod=readonly ./cmd/dprelay

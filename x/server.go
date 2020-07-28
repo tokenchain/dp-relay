@@ -1,9 +1,9 @@
-package extend
+package x
 
 import (
 	"dprelay/common/conf"
 	"dprelay/common/rest"
-	"dprelay/extend/internal/hdwallet"
+	"dprelay/x/internal/hdwallet"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"

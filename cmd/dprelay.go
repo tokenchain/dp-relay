@@ -2,7 +2,7 @@ package main
 
 import (
 	"dprelay/common/conf"
-	"dprelay/extend"
+	"dprelay/x"
 	"flag"
 	"fmt"
 	"github.com/spf13/pflag"
@@ -41,6 +41,6 @@ func main() {
 	config := conf.DefaultConfig()
 	config.RootDir = viper.GetString(flagRootDir)
 	config.ListenAddr = viper.GetString(flagListenerAddress)
-	adm := extend.NewConf(config)
+	adm := x.NewConf(config)
 	adm.Serve()
 }
