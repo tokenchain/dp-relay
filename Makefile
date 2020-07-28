@@ -25,7 +25,7 @@ else
 	go build -mod=readonly -o build/dprelay ./cmd/dprelay
 endif
 centos: update-git go.sum
-	gox -osarch="linux/amd64" -mod=readonly -output build/linux/dprelay ./cmd/dprelay
+	gox -osarch="linux/amd64" -output build/linux/dprelay ./cmd/dprelay
 install: go.sum
 	go install -mod=readonly ./cmd/dprelay
 sign-release:
@@ -33,7 +33,7 @@ sign-release:
 	  gpg --default-key $(GPG_SIGNING_KEY) -a \
 	      -o SHA256SUMS.sign -b SHA256SUMS; \
 	fi;
-lint: go.sum
+lint:
 	go run ./cmd/dprelay
 update-git: go.sum
 	$(update_check)
