@@ -5,5 +5,5 @@ import (
 )
 
 func Recovery() {
-	//generator := exported.New()
+	generator := exported.New
 }
