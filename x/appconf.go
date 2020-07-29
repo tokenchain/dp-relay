@@ -9,6 +9,7 @@ import (
 
 const (
 	certPath             = "/Users/hesk/Documents/ixo/dp-hub/private/did_mainnet"
+	certPathTest         = "/Users/hesk/Documents/ixo/dp-hub/private/did_testnet"
 	appName              = "Darkpool"
 	CoinType             = 177
 	Bech32MainPrefix     = "dx0"
