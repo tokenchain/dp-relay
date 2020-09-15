@@ -3,6 +3,7 @@ VERSION := v$(shell cat version)              # $(shell echo $(shell git describ
 COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 GPG_SIGNING_KEY = ''
+COMPRESSED_NAME:="replay_centos_v$(VERSION).tar.gz"
 export GO111MODULE = on
 
 define update_check
@@ -52,9 +53,17 @@ update-git: go.sum
 preinstall: go.sum
 	sudo go get github.com/mitchellh/gox
 
+buildcompress: centos
+	@cd ./build/linux/
+	tar -czf $(COMPRESSED_NAME) "dprelay"
+
+
 ####====================
 ### Tools & dependencies
 ####====================
+
+
+
 go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
 	@go mod download
