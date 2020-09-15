@@ -64,7 +64,7 @@ preinstall: go.sum
 
 buildcompress: centos
 	@cd $(current_dir)/build/linux/
-	@tar -czf $(COMPRESSED_NAME) "$(current_dir)/build/linux/dprelay"
+	@tar -czf $(COMPRESSED_NAME) "dprelay"
 	@mv $(COMPRESSED_NAME) $(current_dir)/build/linux/$(COMPRESSED_NAME)
 
 go-mod-cache: go.sum
