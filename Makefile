@@ -3,7 +3,7 @@ VERSION := v$(shell cat version)              # $(shell echo $(shell git describ
 COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 GPG_SIGNING_KEY = ''
-COMPRESSED_NAME:="replay_centos_v$(VERSION).tar.gz"
+COMPRESSED_NAME:="replay_centos_v$(shell cat version).tar.gz"
 export GO111MODULE = on
 
 define update_check
@@ -55,7 +55,8 @@ preinstall: go.sum
 
 buildcompress: centos
 	@cd ./build/linux/
-	tar -czf $(COMPRESSED_NAME) "dprelay"
+	@tar -czf $(COMPRESSED_NAME) "dprelay"
+	@mv $(COMPRESSED_NAME) ./build/linux/
 
 
 ####====================
