@@ -10,23 +10,30 @@ endef
 # process build tags
 
 # process linker flags
+ldflags = \
+    -X github.com/cosmos/cosmos-sdk/version.Name=Relay \
+	-X dprelay/x.Version=$(VERSION) \
+	-X dprelay/x.Commit=$(COMMIT)
 
 
-#BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
-SHOWTIMECMD :=  date "+%Y/%m/%d H:%M:%S"
+SHOWTIMECMD := date "+%Y/%m/%d H:%M:%S"
+BUILD_FLAGS := -ldflags '$(ldflags)'
 
 all: lint install
 OS=linux
 
 build: go.sum update-git
+
 ifeq ($(OS),Windows_NT)
 	go build -mod=readonly -o build/dprelay.exe ./cmd/relay
 else
 	go build -mod=readonly -o build/dprelay ./cmd/relay
 	go build -o build/dprelay ./cmd/relay
 endif
+
 centos: update-git go.sum
-	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/relay
+	env GOOS=linux GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/linux/dprelay ./cmd/relay
+	#	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/relay
 install: go.sum
 	go install -mod=readonly ./cmd/relay
 sign-release:

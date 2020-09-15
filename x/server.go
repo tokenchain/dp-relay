@@ -13,6 +13,8 @@ import (
 
 const (
 	DefaultListenAddr = "0.0.0.0:8080"
+	Version="0.2"
+	Commit="0.2"
 )
 
 type Centere struct {
