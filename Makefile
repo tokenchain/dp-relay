@@ -13,9 +13,9 @@ endef
 
 # process linker flags
 ldflags = \
-    -X $(PACKAGE)/x/server.Name="Darkpool Relay" \
-	-X $(PACKAGE)/x/server.Version=$(VERSION) \
-	-X $(PACKAGE)/x/server.Commit=$(COMMIT)
+    -X $(PACKAGE)/x.Name="Darkpool Relay" \
+	-X $(PACKAGE)/x.Version=$(VERSION) \
+	-X $(PACKAGE)/x.Commit=$(COMMIT)
 
 SHOWTIMECMD := date "+%Y/%m/%d H:%M:%S"
 BUILD_FLAGS := -ldflags '$(ldflags)'
