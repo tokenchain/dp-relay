@@ -23,7 +23,9 @@ func PostResponse(w http.ResponseWriter, json *SimpleJson.Json) {
 	}
 	res(w, payload)
 }
-
+func ResponseText(w http.ResponseWriter, list string) {
+	resTxt(w, []byte(list))
+}
 func Endpoints(w http.ResponseWriter, allEndPoints []string) {
 	endpoints := struct {
 		Endpoints []string `json:"endpoints"`
@@ -36,6 +38,11 @@ func Endpoints(w http.ResponseWriter, allEndPoints []string) {
 		return
 	}
 	res(w, jsonBytes)
+}
+func resTxt(w http.ResponseWriter, jsonBytes []byte) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonBytes)
 }
 
 func res(w http.ResponseWriter, jsonBytes []byte) {

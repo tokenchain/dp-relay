@@ -4,6 +4,7 @@ import (
 	"dprelay/common/conf"
 	"dprelay/common/rest"
 	"dprelay/x/internal/hdwallet"
+	"dprelay/x/internal/p2p"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -36,6 +37,7 @@ func NewConf(config *conf.Config) *Centere {
 		Config: config,
 		routesGet: map[string]hdwallet.EndpointHandler{
 			"/hdwallet/create/mnemonic": hdwallet.GenerateMnemonic,
+			"/p2p":p2p.GetP2Plist,
 			//fmt.Sprintf("/hdwallet/create/{%s}/{%s}/", hdwallet.Name, hdwallet.Index):            hdwallet.RecoveryHandler,
 			//fmt.Sprintf("/hdwallet/createbatch/{%s}/{%s}", hdwallet.FromIndex, hdwallet.ToIndex): hdwallet.GenerateMnemonic,
 			//"/hdwallet/recover/": hdwallet.GenerateMnemonic,
