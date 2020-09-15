@@ -32,7 +32,7 @@ else
 endif
 
 centos: update-git go.sum
-	env GOOS=linux GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/linux/dprelay ./cmd/relay
+	env GOOS=linux GOARCH=amd64 go build -mod=readonly -o build/linux/dprelay ./cmd/relay
 	#	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/relay
 
 install: go.sum
