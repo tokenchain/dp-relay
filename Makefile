@@ -4,7 +4,6 @@ COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 GPG_SIGNING_KEY = ''
 export GO111MODULE = on
-PACKAGE := 'dprelay'
 
 define update_check
  sh update.sh
@@ -13,9 +12,9 @@ endef
 
 # process linker flags
 ldflags = \
-    -X $(PACKAGE)/x.Name="Darkpool Relay" \
-	-X $(PACKAGE)/x.Version=$(VERSION) \
-	-X $(PACKAGE)/x.Commit=$(COMMIT)
+    -X dprelay/x.Name="Darkpool Relay" \
+	-X dprelay/x.Version=$(VERSION) \
+	-X dprelay/x.Commit=$(COMMIT)
 
 SHOWTIMECMD := date "+%Y/%m/%d H:%M:%S"
 BUILD_FLAGS := -ldflags '$(ldflags)'
