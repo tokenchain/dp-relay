@@ -21,18 +21,23 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 
 all: lint install
 OS=linux
+
 build: go.sum update-git
+
 ifeq ($(OS),Windows_NT)
 	go build -mod=readonly -o build/dprelay.exe ./cmd/relay
 else
 	go build -mod=readonly -o build/dprelay ./cmd/relay
 	go build -o build/dprelay ./cmd/relay
 endif
+
 centos: update-git go.sum
 	env GOOS=linux GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/linux/dprelay ./cmd/relay
 	#	gox -osarch="linux/amd64" -mod=readonly  -output build/linux/dprelay ./cmd/relay
+
 install: go.sum
 	go install -mod=readonly ./cmd/relay
+
 sign-release:
 	if test -n "$(GPG_SIGNING_KEY)"; then \
 	  gpg --default-key $(GPG_SIGNING_KEY) -a \
@@ -40,10 +45,13 @@ sign-release:
 	fi;
 lint:
 	go run ./cmd/relay
+
 update-git: go.sum
 	$(update_check)
+
 preinstall: go.sum
 	sudo go get github.com/mitchellh/gox
+
 ####====================
 ### Tools & dependencies
 ####====================
