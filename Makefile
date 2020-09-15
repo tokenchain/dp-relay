@@ -4,7 +4,7 @@ COMMIT := $(shell git log -1 --format='%H')
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 GPG_SIGNING_KEY = ''
 export GO111MODULE = on
-PACKAGE := "dprelay"
+PACKAGE = 'dprelay'
 
 define update_check
  sh update.sh
