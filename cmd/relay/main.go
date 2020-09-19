@@ -27,6 +27,7 @@ func initFlags() {
 	flag.String(flagRootDir, "./conf", "the local config dir")
 	flag.String(flagConfigAwsRegion, "", "aws s3 region")
 	flag.String(flagConfigAwsSecretKey, "", "aws s3 secret key")
+	flag.String(flagConfigAwsSecretKey, "", "aws s3 secret key")
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 	er := viper.BindPFlags(pflag.CommandLine)
