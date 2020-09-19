@@ -37,8 +37,8 @@ all: lint install
 	OS=linux
 
 build: go.sum update-git
-	go build -mod=readonly -o build/dprelay ./cmd/relay
-	go build -o build/dprelay ./cmd/relay
+	go build -mod=readonly -o build/darwin/dprelay ./cmd/relay
+	go build -o build/darwin/dprelay ./cmd/relay
 
 
 centos: update-git go.sum
