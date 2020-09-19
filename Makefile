@@ -46,7 +46,6 @@ build: go.sum update-git
 
 centos: update-git go.sum
 	env GOOS=linux GOARCH=amd64 go build -mod=readonly -o build/linux/dprelay ./cmd/relay
-	$(compress_file)
 
 install: go.sum
 	go install -mod=readonly ./cmd/relay
