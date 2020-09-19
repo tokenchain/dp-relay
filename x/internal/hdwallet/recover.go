@@ -16,7 +16,8 @@ func RecoverySimpleHandler(w http.ResponseWriter, r *http.Request) {
 	var p ReqMnemonicOnly
 	err := json.NewDecoder(r.Body).Decode(&p)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		//http.Error(w, err.Error(), http.StatusBadRequest)
+		rest.PostErr(w, err)
 		return
 	}
 	index := mux.Vars(r)[Index]
@@ -33,7 +34,8 @@ func RecoveryHandler(w http.ResponseWriter, r *http.Request) {
 	// respond to the client with the error message and a 400 status code.
 	err := json.NewDecoder(r.Body).Decode(&p)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		//http.Error(w, err.Error(), http.StatusBadRequest)
+		rest.PostErr(w, err)
 		return
 	}
 	list := make([]exported.IxoDid, 0)

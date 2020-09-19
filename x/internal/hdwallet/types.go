@@ -1,9 +1,5 @@
 package hdwallet
 
-import (
-	"net/http"
-)
-
 const (
 	Name        = "account_name"
 	Email       = "account_email"
@@ -16,8 +12,6 @@ const (
 )
 
 type (
-	EndpointHandler func(w http.ResponseWriter, r *http.Request)
-
 	ReqMnemonic struct {
 		Words string   `json:"keywords" yaml:"keywords"`
 		Names []string `json:"names" yaml:"names"`

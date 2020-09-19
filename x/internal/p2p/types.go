@@ -13,17 +13,6 @@ var p2plist = []string{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 func GetP2Plist(w http.ResponseWriter, r *http.Request) {
 	rest.ResponseText(w, strings.Join(p2plist, ","))
 }

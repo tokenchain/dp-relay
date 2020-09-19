@@ -15,13 +15,26 @@ func writeHead(w http.ResponseWriter, code int, txt string) {
 	w.WriteHeader(code)
 	_, _ = w.Write([]byte(txt))
 }
-
+func PostErr(w http.ResponseWriter, jsond error) {
+	jsonRes := SimpleJson.New()
+	jsonRes.Set("message", jsond.Error())
+	jsonRes.Set("res", "internal error")
+	payload, err := jsonRes.MarshalJSON()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	res(w, payload, http.StatusBadRequest)
+}
 func PostResponse(w http.ResponseWriter, json *SimpleJson.Json) {
 	payload, err := json.MarshalJSON()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	res(w, payload)
+	res(w, payload, http.StatusOK)
+}
+func ResponseOK(w http.ResponseWriter) {
+	json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 }
 func ResponseText(w http.ResponseWriter, list string) {
 	resTxt(w, []byte(list))
@@ -37,7 +50,7 @@ func Endpoints(w http.ResponseWriter, allEndPoints []string) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	res(w, jsonBytes)
+	res(w, jsonBytes, http.StatusOK)
 }
 func resTxt(w http.ResponseWriter, jsonBytes []byte) {
 	w.Header().Set("Content-Type", "text/plain")
@@ -45,8 +58,8 @@ func resTxt(w http.ResponseWriter, jsonBytes []byte) {
 	w.Write(jsonBytes)
 }
 
-func res(w http.ResponseWriter, jsonBytes []byte) {
+func res(w http.ResponseWriter, jsonBytes []byte, code int) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(code)
 	w.Write(jsonBytes)
 }

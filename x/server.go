@@ -3,6 +3,8 @@ package x
 import (
 	"dprelay/common/conf"
 	"dprelay/common/rest"
+	"dprelay/x/internal/common"
+	"dprelay/x/internal/dap"
 	"dprelay/x/internal/hdwallet"
 	"dprelay/x/internal/p2p"
 	"fmt"
@@ -18,10 +20,11 @@ const (
 	Name              = "Darkpool Relay"
 )
 
+
 type Centere struct {
 	Config     *conf.Config
-	routesGet  map[string]hdwallet.EndpointHandler
-	routesPost map[string]hdwallet.EndpointHandler
+	routesGet  map[string]common.EndpointHandler
+	routesPost map[string]common.EndpointHandler
 }
 
 func (center *Centere) Endpoints(w http.ResponseWriter, r *http.Request) {
@@ -38,19 +41,22 @@ func NewConf(config *conf.Config) *Centere {
 	setPrefix()
 	center := &Centere{
 		Config: config,
-		routesGet: map[string]hdwallet.EndpointHandler{
+		routesGet: map[string]common.EndpointHandler{
 			"/hdwallet/create/mnemonic": hdwallet.GenerateMnemonic,
 			"/p2p":                      p2p.GetP2Plist,
 			//fmt.Sprintf("/hdwallet/create/{%s}/{%s}/", hdwallet.Name, hdwallet.Index):            hdwallet.RecoveryHandler,
 			//fmt.Sprintf("/hdwallet/createbatch/{%s}/{%s}", hdwallet.FromIndex, hdwallet.ToIndex): hdwallet.GenerateMnemonic,
 			//"/hdwallet/recover/": hdwallet.GenerateMnemonic,
 		},
-		routesPost: map[string]hdwallet.EndpointHandler{
+		routesPost: map[string]common.EndpointHandler{
 			fmt.Sprintf("/hdwallet/create/{%s}/", hdwallet.Index): hdwallet.RecoverySimpleHandler,
-			"/hdwallet/recovery": hdwallet.RecoveryHandler,
+			"/hdwallet/recovery":   hdwallet.RecoveryHandler,
+			"/tx/exchangesend":     dap.SendFundExchange(config),
+			"/tx/darkpooltransfer": dap.Transfer(config),
 		},
 	}
 	center.routesGet["/"] = center.Endpoints
+
 	return center
 }
 
