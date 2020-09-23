@@ -36,11 +36,17 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 all: lint install
 	OS=linux
 
-build: go.sum update-git
+#build: go.sum update-git
+build:
 	go build -mod=readonly -o build/darwin/dprelay ./cmd/relay
 	go build -o build/darwin/dprelay ./cmd/relay
 
+build_update: go.sum update-git
+	go build -mod=readonly -o build/darwin/dprelay ./cmd/relay
+	go build -o build/darwin/dprelay ./cmd/relay
 
+#	@cd build/darwin/
+#	@sh test_run.sh
 centos: update-git go.sum
 	env GOOS=linux GOARCH=amd64 go build -mod=readonly -o build/linux/dprelay ./cmd/relay
 
@@ -62,7 +68,7 @@ lint:
 update-git: go.sum
 	$(update_check)
 
-fullbuild: install centos buildcompress
+fullbuild: install build_update centos buildcompress
 
 ####====================
 ### Tools & dependencies

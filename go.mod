@@ -12,4 +12,5 @@ require (
 	github.com/tokenchain/ixo-blockchain v1.3.331
 	golang.org/x/sys v0.0.0-20200420163511-1957bb5e6d1f // indirect
 	github.com/BurntSushi/toml v0.3.1
+	github.com/jinzhu/gorm v1.9.16
 )

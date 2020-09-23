@@ -26,14 +26,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `cos_address`
 --
 
-CREATE TABLE IF NOT EXISTS `dxp_address` (
+CREATE TABLE IF NOT EXISTS `block_transaction` (
   `id` int(11) NOT NULL,
-  `name` varchar(300) NOT NULL,
-  `addressdid` varchar(300) NOT NULL,
-  `addressdx` varchar(300) NOT NULL,
-  `pubkey` varchar(300) NOT NULL,
-  `mnemonic` varchar(400) NOT NULL,
-  `raw` varchar(500) NOT NULL
+  `fid` int(11) NOT NULL,
+  `coin` varchar(300) NOT NULL,
+  `from` varchar(300) NOT NULL,
+  `to` varchar(300) NOT NULL,
+  `amount` varchar(300) NOT NULL,
+  `hash` varchar(300) NOT NULL,
+  `block_height` int(11) NOT NULL,
+  `time` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -43,11 +45,12 @@ CREATE TABLE IF NOT EXISTS `dxp_address` (
 --
 -- Indexes for table `cos_address`
 --
-ALTER TABLE `dxp_address`
+ALTER TABLE `block_transaction`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `dxp_address`
+ALTER TABLE `block_transaction`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 --
 -- AUTO_INCREMENT for dumped tables

@@ -3,6 +3,7 @@ package x
 import (
 	"dprelay/common/conf"
 	"dprelay/common/rest"
+	"dprelay/x/CosMos/BlockSync"
 	"dprelay/x/internal/common"
 	"dprelay/x/internal/dap"
 	"dprelay/x/internal/hdwallet"
@@ -20,9 +21,9 @@ const (
 	Name              = "Darkpool Relay"
 )
 
-
 type Centere struct {
 	Config     *conf.Config
+	ops        *BlockSync.DBOperation
 	routesGet  map[string]common.EndpointHandler
 	routesPost map[string]common.EndpointHandler
 }
@@ -39,11 +40,13 @@ func (center *Centere) Endpoints(w http.ResponseWriter, r *http.Request) {
 }
 func NewConf(config *conf.Config) *Centere {
 	setPrefix()
+	database := BlockSync.NewClientQ(config)
 	center := &Centere{
 		Config: config,
 		routesGet: map[string]common.EndpointHandler{
 			"/hdwallet/create/mnemonic": hdwallet.GenerateMnemonic,
 			"/p2p":                      p2p.GetP2Plist,
+			"/internal/syncexchange":    dap.SyncExchangeDat(config, database),
 			//fmt.Sprintf("/hdwallet/create/{%s}/{%s}/", hdwallet.Name, hdwallet.Index):            hdwallet.RecoveryHandler,
 			//fmt.Sprintf("/hdwallet/createbatch/{%s}/{%s}", hdwallet.FromIndex, hdwallet.ToIndex): hdwallet.GenerateMnemonic,
 			//"/hdwallet/recover/": hdwallet.GenerateMnemonic,
@@ -54,9 +57,8 @@ func NewConf(config *conf.Config) *Centere {
 			"/tx/exchangesend":     dap.SendFundExchange(config),
 			"/tx/darkpooltransfer": dap.Transfer(config),
 		},
+		ops: database,
 	}
-	center.routesGet["/"] = center.Endpoints
-
 	return center
 }
 
@@ -67,6 +69,7 @@ func (center *Centere) registerRoutes(r *mux.Router) {
 	for k, v := range center.routesPost {
 		r.HandleFunc(k, v).Methods("POST")
 	}
+	r.HandleFunc("/", center.Endpoints).Methods("GET")
 }
 func (center *Centere) Serve() {
 	router := mux.NewRouter()
@@ -81,9 +84,7 @@ func (center *Centere) Serve() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-
 	//util.Logger.Infof("start center server at %s", srv.Addr)
-
 	err := srv.ListenAndServe()
 	if err != nil {
 		panic(fmt.Sprintf("start center server error, err=%s", err.Error()))
